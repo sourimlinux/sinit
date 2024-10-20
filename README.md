@@ -1,2 +1,2 @@
 # sinit
-Soon?
+This is a test version

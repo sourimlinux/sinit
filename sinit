@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "sinit 1.0"
+
+if [[ "$$" != "1" ]]; then
+	echo "sinit requires running in 1 pid"
+	exit 69
+fi
+
+mkdir -p /var/service
+mkdir -p /etc/sv/{0,1,2,3,4,5}
+
+for stage in 0 1 2 3 4 5; do
+	for service in `ls /etc/sv/$stage`; do
+		echo " * Running $service service..."
+		/var/service/$service/start || echo " > Failed to start $service"
+	done
+done
