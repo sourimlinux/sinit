@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# SINIT - Sourim Init
+# Copyright (C) 2024 r2team
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 echo "sinit 1.0"
 
 if [[ "$$" != "1" ]]; then
@@ -7,12 +23,11 @@ if [[ "$$" != "1" ]]; then
 	exit 69
 fi
 
-mkdir -p /var/service
-mkdir -p /etc/sv/{0,1,2,3,4,5}
+mkdir -p /etc/sv/{0,1,2,3,4,5,exec}
 
 for stage in 0 1 2 3 4 5; do
 	for service in `ls /etc/sv/$stage`; do
 		echo " * Running $service service..."
-		/var/service/$service/start || echo " > Failed to start $service"
+		/etc/sv/exec/$service/start || echo " > Failed to start $service"
 	done
 done
