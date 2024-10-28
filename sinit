@@ -33,4 +33,4 @@ for stage in 0 1 2 3 4 5; do
 	done
 done
 
-sleep infinity
+exec sleep infinity
