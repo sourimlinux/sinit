@@ -28,8 +28,8 @@ mkdir -p /etc/sv/{0,1,2,3,4,5,exec}
 for stage in 0 1 2 3 4 5; do
 	for service in `ls /etc/sv/$stage`; do
 		echo " * Running $service service..."
-		chmod +x /etc/sv/$stage/$service/start
-		/etc/sv/$stage/$service/start || echo " > Failed to start $service"
+		chmod +x /etc/sv/$stage/$service
+		/etc/sv/$stage/$service start || echo " > Failed to start $service"
 	done
 done
 

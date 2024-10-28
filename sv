@@ -23,13 +23,13 @@ failed() {
 
 case "$1" in
 start)
-	chmod +x /etc/sv/exec/$2/start || failed $2
-	/etc/sv/exec/$2/start || failed $2
+	chmod +x /etc/sv/exec/$2 || failed $2
+	/etc/sv/exec/$2 start || failed $2
 	echo "start: $2: ok"
 	;;
 stop)
-	chmod +x /etc/sv/exec/$2/stop || failed $2
-	/etc/sv/exec/$2/stop || failed $2
+	chmod +x /etc/sv/exec/$2 || failed $2
+	/etc/sv/exec/$2 stop || failed $2
 	echo "stop:  $2: ok"
 	;;
 restart)
