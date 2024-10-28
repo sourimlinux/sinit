@@ -33,7 +33,6 @@ for stage in 0 1 2 3 4 5; do
 	done
 done
 
-echo "* Nothing to do. Running /usr/bin/bash"
 while true; do
-	/usr/bin/bash
+	:
 done
