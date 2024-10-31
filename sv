@@ -23,13 +23,13 @@ failed() {
 
 service_ctl() {
 	chmod +x /etc/sv/exec/$2 || failed $2
-	timeout -k 10s 10s /etc/sv/exec/$2 $1 || echo "$1: $2: timeout down"
-	echo "$1: $2: ok"
+	timeout -k 10s 10s /etc/sv/exec/$2 $1 || echo "$1: $2: timeout down" && echo "$1: $2: ok"
 }
 stop_all_service() {
 	for level in 5 4 3 2 1 0; do
 		for sv in `ls /etc/sv/$level/`; do
-			service_ctl stop $sv &
+			chmod +x `readlink /etc/sv/$level/$sv` || failed $sv
+			timeout -k 10s 10s /etc/sv/$level/$sv stop || echo "stop: $sv: timeout down" && echo "stop: $sv: ok"
 		done
 		wait
 	done
