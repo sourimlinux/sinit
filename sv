@@ -21,22 +21,46 @@ failed() {
 	exit 1
 }
 
+service_ctl() {
+	chmod +x /etc/sv/exec/$2 || failed $2
+	timeout -k 10s 10s /etc/sv/exec/$2 $1 || echo "$1: $2: timeout down"
+	echo "$1: $2: ok"
+}
+stop_all_service() {
+	for level in 5 4 3 2 1 0; do
+		for sv in `ls /etc/sv/$level/`; do
+			service_ctl stop $sv &
+		done
+	done
+	wait
+}
+
 case "$1" in
 start)
-	chmod +x /etc/sv/exec/$2 || failed $2
-	/etc/sv/exec/$2 start || failed $2
-	echo "start: $2: ok"
+	service_ctl start $2
 	;;
 stop)
-	chmod +x /etc/sv/exec/$2 || failed $2
-	/etc/sv/exec/$2 stop || failed $2
-	echo "stop:  $2: ok"
+	service_ctl stop $2
 	;;
 restart)
-	$0 stop $2 || failed $2
-	$0 start $2 || failed $2
+	service_ctl stop $2 || failed $2
+	service_ctl start $2 || failed $2
+	;;
+
+reboot)
+	stop_all_service || exit 1
+	echo b > /proc/sysrq-trigger || exit 1
+	;;
+shutdown)
+	stop_all_service || exit 1
+	echo o > /proc/sysrq-trigger || exit 1
 	;;
 *)
-	echo "usage: sv start|stop|restart NAME"
+	echo "usage: sv COMMAND OPTIONS"
+	echo "  start    <NAME>          Start service"
+	echo "  stop     <NAME>          Stop service"
+	echo "  restart  <NAME>          Restart service"
+	echo "  reboot 				 	 Stop all services. Reboot"
+	echo "  shutdown 			 	 Stop all services. Shutdown"
 	;;
 esac

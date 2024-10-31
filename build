@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SRC="pidof.c"
+
+for file in $SRC; do
+	echo -e "  CC\t${file/.c/}"
+	gcc -march=x86-64 -O2 $file -o ${file/.c/} || exit 1
+done

@@ -2,3 +2,4 @@
 
 install -m 755 sinit $DESTDIR/usr/bin/
 install -m 755 sv $DESTDIR/usr/bin/
+install -m 755 pidof $DESTDIR/usr/bin/
