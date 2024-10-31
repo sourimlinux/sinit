@@ -48,11 +48,13 @@ restart)
 	;;
 
 reboot)
-	stop_all_service || exit 1
+	stop_all_service
+	mount -t proc none /proc
 	echo b > /proc/sysrq-trigger || exit 1
 	;;
 shutdown)
-	stop_all_service || exit 1
+	stop_all_service
+	mount -t proc none /proc
 	echo o > /proc/sysrq-trigger || exit 1
 	;;
 *)
