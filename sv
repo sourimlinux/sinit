@@ -31,8 +31,8 @@ stop_all_service() {
 		for sv in `ls /etc/sv/$level/`; do
 			service_ctl stop $sv &
 		done
+		wait
 	done
-	wait
 }
 
 case "$1" in
