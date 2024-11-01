@@ -27,7 +27,7 @@ service_ctl() {
 }
 stop_all_service() {
 	for level in 5 4 3 2 1 0; do
-		for sv in `ls /etc/sv/$level/`; do
+		for sv in `ls /etc/sv/$level/ | tac`; do
 			chmod +x `readlink /etc/sv/$level/$sv` || failed $sv
 			timeout -k 10s 10s /etc/sv/$level/$sv stop || echo "stop: $sv: timeout down" && echo "stop: $sv: ok"
 		done
